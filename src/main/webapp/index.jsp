@@ -1,4 +1,3 @@
-<%@page contentType="text/html" import="java.util.*, java.text.*, java.lang.String, java.io" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +12,7 @@
         <div class="modal-dialog" style="margin-bottom:0">
             <div class="modal-content">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Cálculo de IMC - JSP</h1>
+                    <h1 class="panel-title">Calculo de IMC - JSP</h1>
                 </div>
                 <div class="panel-body">
                 <form name="formulario">
@@ -41,39 +40,59 @@
     String alturaStr = request.getParameter("altura");
     String pesoStr = request.getParameter("peso");
     String sexo = request.getParameter("sexo");
-    float altura = Float.parseFloat(alturaStr);
-    float peso = Float.parseFloat(pesoStr);
+    float altura;
+	float peso;
+	try {
+		peso = Float.parseFloat(pesoStr);
+	} catch( Exception e) {
+		peso = 0;
+	}
+	try {
+		altura = Float.parseFloat(alturaStr);
+	} catch( Exception e) {
+		altura = 0;
+	}
     float imc = 0;
     imc = peso / (altura * altura);
     
     String mensagem = "";
     String tipoMensagem = "";
      
-    if (altura <= 0 && peso <= 0) {
+    if (altura > 0 && peso > 0) {
       
-        if (sexo == "masculino") {
+        if ("masculino".equals(sexo)) {
             if (imc < 20.7) {
                 mensagem = "Abaixo do Peso!";
+				tipoMensagem = "success";
             } else if (imc > 20.7 && imc < 26.4) {
-                mensagem = "Peso Normal!";                            
+                mensagem = "Peso Normal!";   
+				tipoMensagem = "success";
             } else if (imc > 26.4 && imc < 27.8) {
-                mensagem = "Acima do Peso!";                            
+                mensagem = "Acima do Peso!";
+				tipoMensagem = "success";
             } else if (imc > 27.8 && imc < 31.1) {
-                mensagem = "Abaixo do Peso Ideal!";                           
+                mensagem = "Abaixo do Peso Ideal!";
+				tipoMensagem = "warning";
             } else if (imc > 31.1) {
-                mensagem = "Obeso!!!!";                           
+                mensagem = "Obeso!!!!";  
+				tipoMensagem = "warning";
             }
-        } else if (sexo == "feminino") {
+        } else if ("feminino".equals(sexo)) {
             if (imc < 19.1) {
                 mensagem = "Abaixo do Peso!";
+				tipoMensagem = "success";
             } else if (imc > 19.1 && imc < 25.8) {
-                mensagem = "Peso Normal!";                            
+                mensagem = "Peso Normal!";
+				tipoMensagem = "success";
             } else if (imc > 25.8 && imc < 27.3) {
-                mensagem = "Acima do Peso!";                            
+                mensagem = "Acima do Peso!";   
+				tipoMensagem = "success";
             } else if (imc > 27.3 && imc < 32.3) {
-                mensagem = "Abaixo do Peso Ideal!";                            
+                mensagem = "Acima do Peso Ideal!";
+				tipoMensagem = "warning";
             } else if (imc > 32.3) {
-                mensagem = "Obeso!!!!";                            
+                mensagem = "Obeso!!!!";
+				tipoMensagem = "warning";				
             }
         }
    
@@ -84,21 +103,9 @@
    
 %>
 
-            <!--
-String idadeStr = request.getParameter("idade");
-int idade = Integer.parseInt(idadeStr);
-String mensagem = "";
-String tipoMensagem = "";
-if (maior(idade)) {
-    mensagem = "De Maior! :)";
-    tipoMensagem = "success";
-} else {
-    mensagem = "De Menor! :(";
-    tipoMensagem = "warning";
-}
--->
+  
       <!-- Utilização de vaviáveis em expressões JSP. -->
-      <div class="alert alert-<%=tipoMensagem%>" role="alert" style="margin-top:45px"><%=mensagem%></div>
+      <div class="alert alert-<%=tipoMensagem%>" role="alert" style="margin-top:45px">Sexo: <%=sexo%><br>Seu IMC: <%=imc%><br>Resultado: <%=mensagem%></div>
     </div>
   </body>
 </html>
